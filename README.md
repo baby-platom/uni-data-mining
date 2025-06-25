@@ -1,2 +1,2 @@
 # uni-data-mining
-The repository contains the code of a Data Mining project.
+The repository contains the code of a Data Mining project. The data set named "Movie Recommendation System" is taken Kaggle and located at https://www.kaggle.com/datasets/dev0914sharma/dataset/data.
