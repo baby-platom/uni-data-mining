@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pandas as pd
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -28,7 +27,6 @@ def merge_datasets(
 
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Perform basic cleaning operations."""
     df = df.drop_duplicates()
 
     for col in df.columns:
@@ -63,6 +61,7 @@ def extract_features(df: pd.DataFrame) -> pd.DataFrame:
         df["rating_month"] = df["timestamp"].dt.month
         df["rating_day"] = df["timestamp"].dt.day
         df["rating_hour"] = df["timestamp"].dt.hour
+        df.drop(columns=["timestamp"], inplace=True)
     else:
         logger.warning(
             "Column 'timestamp' is not datetime, skipping datetime features."
@@ -90,6 +89,8 @@ def ingest_and_preprocess_data(
     datasets = load_csv_data(file_paths)
 
     df_merged = merge_datasets(datasets, on=["item_id"])
+    df_merged = df_merged.rename(columns={"item_id": "movie_id"})
+
     df_clean = clean_data(df_merged)
 
     df_features = extract_features(df_clean)
