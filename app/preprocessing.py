@@ -29,6 +29,16 @@ def merge_datasets(
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
 
+    duplicate_mask = df.duplicated(subset=["user_id", "movie_id"], keep=False)
+    if duplicate_mask.any():
+        dup_pairs = (
+            df.loc[duplicate_mask, ["user_id", "movie_id"]]
+            .drop_duplicates()
+            .values.tolist()
+        )
+        logger.info(f"Removing multiple ratings for user-movie pairs: {dup_pairs}")
+        df = df.loc[~duplicate_mask]
+
     for col in df.columns:
         if "timestamp" in col.lower():
             with contextlib.suppress(ValueError, TypeError):
@@ -90,6 +100,8 @@ def ingest_and_preprocess_data(
 
     df_merged = merge_datasets(datasets, on=["item_id"])
     df_merged = df_merged.rename(columns={"item_id": "movie_id"})
+
+    df_merged.info()
 
     df_clean = clean_data(df_merged)
 

@@ -26,7 +26,7 @@ def compute_matrix_sparsity(df: pd.DataFrame, num_users: int, num_movies: int) -
     observed = len(df.drop_duplicates(subset=["user_id", "movie_id"]))
     sparsity = observed / possible_pairs
 
-    logger.info(f"Matrix sparsity (fraction observed): {sparsity:.6f}")
+    logger.info(f"Matrix sparsity: {sparsity:.6f}")
 
     return sparsity
 
