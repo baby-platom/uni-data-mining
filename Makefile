@@ -16,7 +16,3 @@ help:
 .PHONY: lint
 lint: ## Check code for inconsistencies
 	uv run ruff check .
-
-.PHONY: sort-deps
-sort-deps: ## Install application dependencies
-	uv run uv-sort

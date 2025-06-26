@@ -44,14 +44,6 @@ def plot_raw_rating_distribution(df: pd.DataFrame, ax: plt.Axes) -> None:
     ax.set_ylabel("Frequency")
 
 
-def check_normalized_ratings(df: pd.DataFrame) -> None:
-    min_scaled, max_scaled = df["rating_scaled"].min(), df["rating_scaled"].max()
-    logger.info(f"Scaled ratings range: [{min_scaled:.3f}, {max_scaled:.3f}]")
-
-    mean_z, std_z = df["rating_zscore"].mean(), df["rating_zscore"].std()
-    logger.info(f"Z-score ratings mean: {mean_z:.3f}, std: {std_z:.3f}")
-
-
 def user_activity_distribution(df: pd.DataFrame, ax: plt.Axes) -> None:
     counts = df.groupby("user_id").size()
     counts.hist(bins=50, ax=ax)
@@ -143,7 +135,6 @@ def run_eda(df: pd.DataFrame) -> None:
     fig.tight_layout()
     plt.show()
 
-    check_normalized_ratings(df)
     inspect_missing_values(df)
     compute_feature_correlations(
         df,
